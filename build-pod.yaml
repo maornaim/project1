@@ -10,9 +10,11 @@ spec:
       securityContext:
         privileged: true
     
-    - name: python
+    - name: python-test
       image: python:3.9-slim
+      command: ["sleep"]
+      args: ["infinity"]
       imagePullPolicy: Always
       securityContext:
-        privileged: true
+        privileged: false
     
