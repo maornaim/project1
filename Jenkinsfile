@@ -1,4 +1,4 @@
-pipline{
+pipeline{
     agent{
         kubernetes{
             label "maor"
