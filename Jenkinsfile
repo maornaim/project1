@@ -8,7 +8,6 @@ pipeline{
 
         }
     }
-    /////////try 1 to marge
     
     environment{
         GITHUB_CREDS="gitHub"
