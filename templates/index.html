@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask App</title>
+    <title>Math App</title>
 </head>
 <body>
-    <h1>Welcome to my Flask App!</h1>
+    <h1>Math App</h1>
+    <form action="/add" method="post">
+        <input type="number" name="num1" placeholder="Number 1" required>
+        <input type="number" name="num2" placeholder="Number 2" required>
+        <button type="submit">Add</button>
+    </form>
+    {% if result is not none %}
+        <h2>Result: {{ result }}</h2>
+    {% endif %}
 </body>
 </html>

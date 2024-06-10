@@ -32,6 +32,18 @@ pipeline{
                 }
             }
         }
+        stage("testing"){
+            steps{
+                script{
+                    sh "docker-compose -f docker-compose.yaml up -d"
+                    sh "docker-compose -f docker-compose.yaml run test"  //(ליתר ביטחון)
+                    sh "docker-compose -f docker-compose.yaml down"
+                }
+            }
+        }
+
+
+
         stage("push docker image"){
             when{
                 branch "main" 
