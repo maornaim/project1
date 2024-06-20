@@ -1,17 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Math App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Tracker</title>
 </head>
 <body>
-    <h1>Math App</h1>
-    <form action="/add" method="post">
-        <input type="number" name="num1" placeholder="Number 1" required>
-        <input type="number" name="num2" placeholder="Number 2" required>
-        <button type="submit">Add</button>
+    <h1>Stock Tracker</h1>
+    <h2>Add New Stock</h2>
+    <form action="/add_stock" method="post">
+        <label for="name">Stock Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="monthly_prices">Monthly Prices (comma separated):</label>
+        <input type="text" id="monthly_prices" name="monthly_prices" required><br><br>
+        <input type="submit" value="Add Stock">
     </form>
-    {% if result is not none %}
-        <h2>Result: {{ result }}</h2>
+
+    <h2>Previous Stocks</h2>
+    {% if stocks %}
+        {% for stock in stocks %}
+            <div>
+                <h3>{{ stock.name }}</h3>
+                <form action="/calculate_changes/{{ stock._id }}" method="get">
+                    <input type="submit" value="Show Changes">
+                </form>
+                {% if stock.changes %}
+                    <div>
+                        {% for change in stock.changes %}
+                            <p>Month {{ change.month }}: Change = {{ change.change }}, Percentage Change = {{ change.percentage_change }}%</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No stocks found.</p>
     {% endif %}
 </body>
 </html>

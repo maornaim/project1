@@ -10,12 +10,12 @@ services:
   project:
     build: .
     ports:
-      - "3000:3000"
+      - "7000:7000"
     depends_on:
       - mongo
 
   test:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.test
     depends_on:
