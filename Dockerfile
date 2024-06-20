@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache -r requirements.txt
 
-EXPOSE 3000
+EXPOSE 7000
 
-CMD [ "flask","run","--host=0.0.0.0","--port=3000"]
+CMD [ "flask","run","--host=0.0.0.0","--port=7000"]

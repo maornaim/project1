@@ -1,26 +1,52 @@
-import pytest
-from app import app, collection  # Adjust the import if needed based on the location of app.py
-from unittest.mock import patch
+import unittest
+from app import app, client, db, collection
+from bson.objectid import ObjectId
 
-@pytest.fixture
-def client():
-    with app.test_client() as client:
-        yield client
+class FlaskTestCase(unittest.TestCase):
+    def setUp(self):
+        # Setup before each test
+        self.app = app.test_client()
+        self.app.testing = True
 
-def test_index(client):
-    response = client.get("/")
-    assert response.status_code == 200
-    assert b"<form" in response.data  # Check if the form is in the rendered HTML
+        # Clean the database before each test
+        collection.delete_many({})
 
-def test_add(client):
-    with patch('app.collection.insert_one') as mock_insert:
-        response = client.post("/add", data={"num1": "2", "num2": "3"})
-        assert response.status_code == 200
-        assert b"5" in response.data  # Check if the result 5 is in the rendered HTML
+    def tearDown(self):
+        # Cleanup after each test
+        collection.delete_many({})
 
-        # Check if the data is inserted into MongoDB
-        assert mock_insert.called
-        args, kwargs = mock_insert.call_args
-        assert args[0]['num1'] == "2"
-        assert args[0]['num2'] == "3"
-        assert args[0]['result'] == 5
+    def test_add_stock(self):
+        response = self.app.post('/add_stock', data=dict(
+            name="TestStock",
+            monthly_prices="100,150,200"
+        ), follow_redirects=True)
+
+        self.assertEqual(response.status_code, 200)
+        stock = collection.find_one({"name": "TestStock"})
+        self.assertIsNotNone(stock)
+        self.assertEqual(stock["name"], "TestStock")
+        self.assertEqual(stock["monthly_prices"], [100, 150, 200])
+
+    def test_get_stocks(self):
+        collection.insert_one({
+            "name": "TestStock",
+            "monthly_prices": [100, 150, 200]
+        })
+
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"TestStock", response.data)
+    
+    def test_calculate_changes(self):
+        stock_id = collection.insert_one({
+            "name": "TestStock",
+            "monthly_prices": [100, 150, 200]
+        }).inserted_id
+
+        response = self.app.get(f'/calculate_changes/{stock_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Month 1: Change = 50", response.data)
+        self.assertIn(b"Month 2: Change = 50", response.data)
+
+if __name__ == '__main__':
+    unittest.main()
