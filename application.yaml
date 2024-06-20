@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: maorproject
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/maornaim/project1
+    targetRevision: HEAD
+    path: ./my-app
+    helm:
+      parameters:
+        - name: image.repository
+          value: maorn132/project1
+        - name: image.tag
+          value: latest
+        - name: image.pullPolicy
+          value: Always
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
