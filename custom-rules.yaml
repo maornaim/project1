@@ -1,9 +1,11 @@
 additionalPrometheusRulesMap:
-  rule-name:
-    groups:
-    - name: project
-      rules:
-      - alert: LowRunningPodsCount
+  # Existing rule name (optional, adjust if needed)
+  rule-name:  # You can keep this line or remove it if there's no existing rule
+  groups:
+  - name: project
+    rules:
+      # Existing rule (optional, adjust if needed)
+      - alert: LowRunningPodsCount  # You can keep this line or remove it if there's no existing rule
         expr: count(kube_pod_status_phase{namespace="default", pod=~"maorproject-my-app.*", phase="Running"}) < 4
         for: 1m
         labels:
@@ -11,3 +13,11 @@ additionalPrometheusRulesMap:
         annotations:
           summary: "Low number of running pods"
           description: "The count of running pods matching maorproject-my-app*' in namespace 'default' is below 4."
+      # New rule for high CPU usage
+      - alert: HighCpuLoad  # Name of the new rule
+        expr: avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100 < 20 for: 5m  # Adjust expression if needed
+        labels:
+          severity: warning  # Adjust severity if needed
+        annotations:
+          summary: "CPU Usage over 80% on {{ $labels.instance }}"
+          description: "CPU usage on instance {{ $labels.instance }} has been above 80% for more than 5 minutes."
