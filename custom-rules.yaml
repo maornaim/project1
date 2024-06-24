@@ -21,3 +21,12 @@ additionalPrometheusRulesMap:
         annotations:
           summary: "CPU Usage over 80% on {{ $labels.instance }}"
           description: "CPU usage on instance {{ $labels.instance }} has been above 80% for more than 5 minutes."
+        #//////////////////
+      - alert: LowRunningPodsCountnewwwwww  # You can keep this line or remove it if there's no existing rule
+        expr: count(kube_pod_status_phase{namespace="default", pod=~"maorproject-my-app.*", phase="Running"}) < 6
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Low number of running pods"
+          description: "The count of running pods matching maorproject-my-app*' in namespace 'default' is below 6."
