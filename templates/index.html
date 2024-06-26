@@ -55,7 +55,7 @@
     <div class="content">
         <h1>Stock Tracker</h1>
         <h2>Add New Stock</h2>
-        <form action="/add_stock" method="post">
+        <form action="{{ url_for('add_stock') }}" method="post">
             <label for="name">Stock Name:</label>
             <input type="text" id="name" name="name" required>
             <label for="monthly_prices">Monthly Prices (comma separated):</label>
@@ -68,7 +68,7 @@
             {% for stock in stocks %}
                 <div class="stock-container">
                     <h3>{{ stock.name }}</h3>
-                    <form action="/calculate_changes/{{ stock._id }}" method="get">
+                    <form action="{{ url_for('calculate_changes', stock_id=stock._id) }}" method="get">
                         <input type="submit" value="Show Changes">
                     </form>
                     {% if stock.changes %}
