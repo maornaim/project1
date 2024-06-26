@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Tracker</title>
+    <style>
+        body {
+            background-image: url('https://www.as-invest.co.il/wp-content/uploads/2019/04/forex-trading-background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        h1, h2, p, label {
+            color: white;
+        }
+        .stock-container {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <h1>Stock Tracker</h1>
@@ -19,7 +36,7 @@
     <h2>Previous Stocks</h2>
     {% if stocks %}
         {% for stock in stocks %}
-            <div>
+            <div class="stock-container">
                 <h3>{{ stock.name }}</h3>
                 <form action="/calculate_changes/{{ stock._id }}" method="get">
                     <input type="submit" value="Show Changes">

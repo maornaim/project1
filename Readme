@@ -1,7 +1,0 @@
-This app helps to track stocks in a clearer way. You can input a stock name and its price each month, and the app shows the differences between months in both money amount and percentages.
-
-To operate:
-To view all the complementary software for the app, activate the ports as specified in the 'loclhostports' form.
-
-Purpose of the project:
-To make updates to your app more convenient (Jenkins), to see alerts (Prometheus), visualize alerts (monitoring), monitor your running containers (ArgoCD), and finally, to view your application (My Project)
