@@ -5,53 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Tracker</title>
     <style>
-        body {
-            background-image: url('https://www.as-invest.co.il/wp-content/uploads/2019/04/forex-trading-background.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+        .content {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 50px auto;
+            color: black;
         }
-        h1, h2, p, label {
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, input[type="text"], input[type="submit"] {
+            margin-bottom: 15px;
+        }
+        input[type="text"], input[type="submit"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
             color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
         }
         .stock-container {
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(255, 255, 255, 0.8);
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 15px;
+            color: black;
+        }
+        .stock-container h3 {
+            margin: 0 0 10px 0;
+        }
+        .stock-container p {
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
-    <h1>Stock Tracker</h1>
-    <h2>Add New Stock</h2>
-    <form action="/add_stock" method="post">
-        <label for="name">Stock Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="monthly_prices">Monthly Prices (comma separated):</label>
-        <input type="text" id="monthly_prices" name="monthly_prices" required><br><br>
-        <input type="submit" value="Add Stock">
-    </form>
+    <div class="content">
+        <h1>Stock Tracker</h1>
+        <h2>Add New Stock</h2>
+        <form action="/add_stock" method="post">
+            <label for="name">Stock Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="monthly_prices">Monthly Prices (comma separated):</label>
+            <input type="text" id="monthly_prices" name="monthly_prices" required>
+            <input type="submit" value="Add Stock">
+        </form>
 
-    <h2>Previous Stocks</h2>
-    {% if stocks %}
-        {% for stock in stocks %}
-            <div class="stock-container">
-                <h3>{{ stock.name }}</h3>
-                <form action="/calculate_changes/{{ stock._id }}" method="get">
-                    <input type="submit" value="Show Changes">
-                </form>
-                {% if stock.changes %}
-                    <div>
-                        {% for change in stock.changes %}
-                            <p>Month {{ change.month }}: Change = {{ change.change }}, Percentage Change = {{ change.percentage_change }}%</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No stocks found.</p>
-    {% endif %}
+        <h2>Previous Stocks</h2>
+        {% if stocks %}
+            {% for stock in stocks %}
+                <div class="stock-container">
+                    <h3>{{ stock.name }}</h3>
+                    <form action="/calculate_changes/{{ stock._id }}" method="get">
+                        <input type="submit" value="Show Changes">
+                    </form>
+                    {% if stock.changes %}
+                        <div>
+                            {% for change in stock.changes %}
+                                <p>Month {{ change.month }}: Change = {{ change.change }}, Percentage Change = {{ change.percentage_change }}%</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No stocks found.</p>
+        {% endif %}
+    </div>
 </body>
 </html>
