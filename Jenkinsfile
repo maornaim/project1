@@ -4,12 +4,12 @@ pipeline{
             label "maor"
             idleMinutes 5
             yamlFile "build-pod.yaml"
-            defaultContainer "ez-docker-helm-build"
+            defaultContainer "ez-docker-helm-build"  // מריץ את הפקודות על הקונטייר הזה כמו שרואים בפורט
 
         }
     }
     
-    environment{
+    environment{      // משתני סביב שמשתמשים בקוד
         GITHUB_CREDS="gitHub"
         DOCKER_IMAGE="maorn132/project1"
         GITHUB_API_URL="https://api.github.com"
@@ -28,23 +28,23 @@ pipeline{
 
             steps{
                 script{
-                    dockerImage=docker.build("${DOCKER_IMAGE}:latest","--no-cache .")
+                    dockerImage=docker.build("${DOCKER_IMAGE}:latest","--no-cache .") //בונה את האימג מהדוקר פייל פה בתקייה
                 }
             }
         }
         stage("testing"){
             steps{
                 script{
-                    sh "docker-compose -f docker-compose.yaml up -d"
-                    sh "docker-compose -f docker-compose.yaml run test"  //(ליתר ביטחון)
-                    sh "docker-compose -f docker-compose.yaml down"
+                    sh "docker-compose -f docker-compose.yaml up -d"        //יוצר באיג'נט את הדוקר קומפאוז ועושה לו את הטסט_אפפ
+                    sh "docker-compose -f docker-compose.yaml run test"  //(לבדוק בזמן אמת שוב את הטסט_אפפ)
+                    sh "docker-compose -f docker-compose.yaml down" // מכבה אותו
                 }
             }
         }
 
 
 
-        stage("push docker image"){
+        stage("push docker image"){  //דוחף לדוקר האב
             when{
                 branch "main" 
             }
@@ -64,7 +64,7 @@ pipeline{
                 }
             }
             steps{
-                withCredentials([string(credentialsId: 'gitHub', variable: 'GITHUB_TOKEN')]) {
+                withCredentials([string(credentialsId: 'gitHub', variable: 'GITHUB_TOKEN')]) { //משתמש בקרדט כדי לתת גישה לגיט האב
                     script {
                         def branchName = env.BRANCH_NAME
                         def pullRequestTitle = "Merge ${branchName} into main"

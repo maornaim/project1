@@ -1,9 +1,16 @@
 kubectl port-forward svc/argocd-server -n argocd 8081:443
+user name - admin 
+password -  Tkz9Ymt5YdaRCUL8 
+
 
 kubectl port-forward svc/maorproject-my-app 7000:7000
+kubestl apply -f .\application.yaml
+
 
 kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -n monitoring
+password - prom-operator
 
 kubectl port-forward -n monitoring svc/prometheus-grafana 3000:80
 
 kubectl --namespace default port-forward svc/jenkins 8080:8080  
+password - zUdEF27uVvU0hjsnIucrhe
