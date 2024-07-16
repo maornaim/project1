@@ -11,10 +11,10 @@ additionalPrometheusRulesMap:
             annotations:
               summary: "Low number of running pods"
               description: "The count of running pods matching 'maorproject-my-app*' in namespace 'default' is below 4."
-          - alert: HighCpuLoad  # Name of the new rule
+          - alert: HighCpuLoad  # Name of the new rule 
             expr: avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100 > 80
             for: 5m
-            labels:
+            labels: 
               severity: warning
             annotations:
               summary: "High CPU Usage on {{ $labels.instance }}"
@@ -25,5 +25,5 @@ additionalPrometheusRulesMap:
             labels:
               severity: critical
             annotations:
-              summary: "Low number of running pods"
+              summary: "Low number of running pods" #סתם ךכתוב משהו
               description: "The count of running pods matching 'maorproject-my-app*' in namespace 'default' is below 3."
